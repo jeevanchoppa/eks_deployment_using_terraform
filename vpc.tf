@@ -1,5 +1,7 @@
 resource "aws_vpc" "project-eks-vpc" {
-  cidr_block = var.vpc_cidr
+  cidr_block           = var.vpc_cidr
+  enable_dns_hostnames = true
+  enable_dns_support   = true
 
   tags = {
     Name = "project-eks-vpc"
@@ -13,7 +15,8 @@ resource "aws_subnet" "project-eks-public-subnet" {
   availability_zone = element(var.aws_azs, count.index)
 
   tags = {
-    Name = "project-eks-public-subnet-${count.index + 1}"
+    Name                     = "project-eks-public-subnet-${count.index + 1}"
+    "kubernetes.io/role/elb" = "1"
   }
 }
 
@@ -24,7 +27,8 @@ resource "aws_subnet" "project-eks-private-subnet" {
   availability_zone = element(var.aws_azs, count.index)
 
   tags = {
-    Name = "project-eks-private-subnet-${count.index + 1}"
+    Name                                        = "project-eks-private-subnet-${count.index + 1}"
+    "kubernetes.io/cluster/project-eks-cluster" = "OWNED"
   }
 }
 
