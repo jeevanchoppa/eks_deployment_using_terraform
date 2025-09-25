@@ -20,7 +20,7 @@ resource "aws_eks_cluster" "project-eks-cluster" {
     security_group_ids      = [aws_security_group.project-eks-cluster-sg.id]
     endpoint_private_access = true
     endpoint_public_access  = true
-    subnet_ids              = ["aws_subnet.project-eks-private-subnet[*].id",]
+    subnet_ids              = ["aws_subnet.project-eks-private-subnet[*].id", "aws_subnet.project-eks-public-subnet[*].id"]
   }
   bootstrap_self_managed_addons = true
   upgrade_policy {
